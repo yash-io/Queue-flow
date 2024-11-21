@@ -4,7 +4,12 @@ export default {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens:{
+        'xs': '475px',
+        'xss': '375px',
+      },
+    },
   },
   plugins: [],
 }
