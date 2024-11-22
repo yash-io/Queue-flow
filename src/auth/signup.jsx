@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { getFirestore, doc, setDoc } from 'firebase/firestore';
+
 import { auth, db } from '../firebase'; // Ensure correct import
 
 const Signup = () => {
@@ -10,7 +10,7 @@ const Signup = () => {
     id: '',
     password: '',
   });
-
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleInput = (event) => {
@@ -27,10 +27,7 @@ const Signup = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
       const user = userCredential.user;
       // Save the id and email to Firestore
-      await setDoc(doc(db, 'users', user.uid), {
-        id: data.id,
-        email: data.email,
-      });
+     
       console.log("User signed up successfully");
       navigate('/login');
     } catch (error) {

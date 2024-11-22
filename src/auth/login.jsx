@@ -1,16 +1,17 @@
 import React ,{useState} from 'react'; 
 import { useNavigate,Link} from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getFirestore,doc,getDoc } from 'firebase/firestore';
+import {auth,db} from '../firebase';
 const Login = ({setLoggedin}) => {
-    const [id, setId] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
     const handleLogin = async (e) => {
         e.preventDefault();
-        navigate('/');
-        const auth = getAuth();
+        const auth =getAuth();
         try {
-          await signInWithEmailAndPassword(auth, id, password);
+          await signInWithEmailAndPassword(auth, email, password);
           setLoggedin(true);
           navigate('/');
         } catch (error) {
@@ -27,8 +28,8 @@ const Login = ({setLoggedin}) => {
                         Enter UserId :
                     </label>
                     <input type="text" name="username" id="username"
-                    value={id}
-                    onChange={(e) => setId(e.target.value)}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="mb-4 p-2 border-2 border-gray-300 rounded-md w-full " required/>
                     <label htmlFor="password " className='block mb-2 font-medium text-gray-700'>
                         Enter Password :   
