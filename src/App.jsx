@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { BrowserRouter as Router,Routes,Route } from 'react-router-dom';
-import Login from './login'
+import Login from './auth/login'
 import Home from './Home';
-import Signup from './signup';
+import Signup from './auth/signup';
 function App() {
  const [loggedin, setLoggedin] = useState(false);
   return (
