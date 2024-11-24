@@ -5,9 +5,7 @@ import Home from './Home';
 import Signup from './auth/signup';
 
 function App() {
- 
-  const [loggedin, setLoggedin] = useState(false);
- 
+ const [loggedin, setLoggedin] = useState(false);
   return (
     <div>
       <Router>
