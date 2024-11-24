@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword,onAuthStateChanged } from 'firebase/auth';
 
-import { auth, db } from '../firebase'; // Ensure correct import
+import { doc, setDoc } from 'firebase/firestore';
+import Navbar from '../Navbar';
+import {  db } from '../firebase'; // Ensure correct import
 
 const Signup = () => {
   const [data, setData] = useState({
     email: '',
-    id: '',
     password: '',
+    confirmPassword: '',
   });
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-
+  const auth = getAuth();
   const handleInput = (event) => {
     const { name, value } = event.target;
     setData((prevData) => ({
@@ -21,41 +23,62 @@ const Signup = () => {
     }));
   };
 
-  const handleSignup = async (e) => {
+  const handleSignup =async (e) => {
     e.preventDefault();
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
-      const user = userCredential.user;
-      // Save the id and email to Firestore
-     
-      console.log("User signed up successfully");
-      navigate('/login');
-    } catch (error) {
-      let errorMessage = "An unexpected error occurred. Please try again.";
-      if (error.code === 'auth/email-already-in-use') {
-        errorMessage = "The email address is already in use by another account.";
-      }
-      setError(errorMessage);
-      console.error("Error signing up:", error);
+    if (data.password.length < 6) {
+      alert("Password should be at least 6 characters long.");
+      setError("Password should be at least 6 characters long.");
+      return;
     }
+    if (data.password !== data.confirmPassword) {
+      alert("Passwords do not match.");
+      setError("Passwords do not match.");
+      return;
+    }
+  
+   await createUserWithEmailAndPassword(auth, data.email, data.password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        return setDoc(doc(db, 'users', user.uid), {
+          email: data.email,
+          password: data.password,
+        });
+      })
+      .then(() => {
+        console.log("User signed up successfully");
+        navigate('/login');
+      })
+      .catch((error) => {
+        let errorMessage = "An unexpected error occurred. Please try again.";
+        if (error.code === 'auth/email-already-in-use') {
+          alert("The email address is already in use by another account.");
+          errorMessage = "The email address is already in use by another account.";
+          navigate('/login');
+        }
+        setError(errorMessage);
+        console.error("Error signing up:", error);
+      });
   };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigate("/");
+        console.log("User is logged in");
+      }
+    });
+    return () => unsubscribe();
+  }, [navigate]);
+
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600">
+      <div>
+        <Navbar />
+      </div>
       <form onSubmit={handleSignup} className="p-8 m-10 border-2 rounded-md w-full max-w-md xs:max-w-sm bg-gray-300">
         <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
-        <label htmlFor="id" className="block mb-2 font-bold">
-          Create UserId:
-        </label>
-        <input
-          type="text"
-          name="id"
-          id="id"
-          value={data.id}
-          onChange={handleInput}
-          className="mb-4 p-2 border-2 border-gray-300 rounded-md w-full"
-          required
-        />
+        
         <label htmlFor="email" className="block mb-2 font-bold">
           Enter Email:
         </label>
@@ -76,6 +99,18 @@ const Signup = () => {
           name="password"
           id="password"
           value={data.password}
+          onChange={handleInput}
+          className="mb-4 p-2 border-2 border-gray-300 rounded-md w-full"
+          required
+        />
+         <label htmlFor="confirmPassword" className="block mb-2 font-bold">
+          Confirm Password:
+        </label>
+        <input
+          type="password"
+          name="confirmPassword"
+          id="confirmPassword"
+          value={data.confirmPassword}
           onChange={handleInput}
           className="mb-4 p-2 border-2 border-gray-300 rounded-md w-full"
           required
