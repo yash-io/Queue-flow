@@ -1,9 +1,10 @@
-import React ,{useState} from 'react'; 
+import React ,{useState,useEffect} from 'react'; 
 import { useNavigate,Link} from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { getFirestore,doc,getDoc } from 'firebase/firestore';
-import {auth,db} from '../firebase';
-const Login = ({setLoggedin}) => {
+
+import Navbar from '../Navbar';
+const Login = ({loggedin,setLoggedin}) => {
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -13,17 +14,26 @@ const Login = ({setLoggedin}) => {
         try {
           await signInWithEmailAndPassword(auth, email, password);
           setLoggedin(true);
+            console.log("Logged in successfully");  
+
+ // Save login state to session storage to prevent loss on refresh and long-term storage
+            localStorage.setItem('loggedin', loggedin);
           navigate('/');
         } catch (error) {
           console.error("Error logging in:", error);
+          alert("Invalid credentials");
         }
+
       };
 
     return (
         <div>
+            <div>
+                <Navbar ></Navbar>
+            </div>
             <div className="flex justify-center items-center max-w-full bg-black min-h-screen bg-gradient-to-r from-blue-500 to-purple-600">
                 <form onSubmit={handleLogin} className="p-8 m-10 border-2 rounded-md w-full xs:max-w-sm bg-gray-300">
-                <h2 className="text-2xl font-medium mb-6 text-center">Login</h2>
+                <h2 className="text-3xl font-medium mb-6 text-center">Login</h2>
                     <label htmlFor="username" className='block mb-2 font-medium text-gray-700'>
                         Enter UserId :
                     </label>
@@ -44,8 +54,7 @@ const Login = ({setLoggedin}) => {
                 <Link to='/signup'>
                 <h3 className='text-center font-bold text-blue-500'>Not a user. Click here to Sign-up</h3>
                 </Link>
-                
-                
+                        
                 </form>
             </div>
         </div>
