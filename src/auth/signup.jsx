@@ -61,14 +61,14 @@ const Signup = ({ setLoggedin }) => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-black via-gray-800 to-black ">
       <div>
         <Navbar loggedin={false} />
       </div>
-      <form onSubmit={handleSignup} className="p-8 m-10 border-2 rounded-md w-full max-w-md xs:max-w-sm bg-gray-300">
-        <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
+      <form onSubmit={handleSignup} className="p-8 m-10 border-2 rounded-md w-full max-w-md xs:max-w-sm bg-gradient-to-r from-blue-500 to-purple-600">
+        <h2 className="text-2xl font-bold mb-6 text-center text-red-100">Sign Up</h2>
         {error && <div className="text-red-500 mb-4">{error}</div>}
-        <label htmlFor="id" className="block mb-2 font-bold">
+        <label htmlFor="id" className="block mb-2 font-bold text-white">
           Create UserId:
         </label>
         <input
@@ -80,7 +80,7 @@ const Signup = ({ setLoggedin }) => {
           className="mb-4 p-2 border-2 border-gray-300 rounded-md w-full"
           required
         />
-        <label htmlFor="email" className="block mb-2 font-bold">
+        <label htmlFor="email" className="block mb-2 font-bold text-white">
           Enter Email:
         </label>
         <input
@@ -92,7 +92,7 @@ const Signup = ({ setLoggedin }) => {
           className="mb-4 p-2 border-2 border-gray-300 rounded-md w-full"
           required
         />
-        <label htmlFor="password" className="block mb-2 font-bold">
+        <label htmlFor="password" className="block mb-2 font-bold text-white">
           Create Password:
         </label>
         <input
@@ -104,7 +104,7 @@ const Signup = ({ setLoggedin }) => {
           className="mb-4 p-2 border-2 border-gray-300 rounded-md w-full"
           required
         />
-        <label htmlFor="confirmPassword" className="block mb-2 font-bold">
+        <label htmlFor="confirmPassword" className="block mb-2 font-bold text-white">
           Confirm Password:
         </label>
         <input
@@ -120,7 +120,7 @@ const Signup = ({ setLoggedin }) => {
           Submit
         </button>
         <Link to="/login">
-          <h3 className="text-center text-blue-500">Already a user? Click here to Login</h3>
+          <h3 className="text-center text-white">Already a user? Click here to Login</h3>
         </Link>
       </form>
     </div>

@@ -30,10 +30,10 @@ const Login = ({ setLoggedin }) => {
   return (
     <div>
       <Navbar loggedin={false} />
-      <div className="flex justify-center items-center max-w-full bg-black min-h-screen bg-gradient-to-r from-blue-500 to-purple-600">
-        <form onSubmit={handleLogin} className="p-8 m-10 border-2 rounded-md w-full xs:max-w-sm bg-gray-300">
-          <h2 className="text-3xl font-medium mb-6 text-center">Login</h2>
-          <label htmlFor="username" className='block mb-2 font-medium text-gray-700'>
+      <div className="flex justify-center items-center max-w-full bg-black min-h-screen bg-gradient-to-r from-black via-gray-800 to-black">
+        <form onSubmit={handleLogin} className="p-8 m-10 border-2 rounded-md w-full xs:max-w-sm  bg-gradient-to-r from-blue-500 to-purple-600">
+          <h2 className="text-3xl font-medium mb-6 text-center text-red-100">Login</h2>
+          <label htmlFor="username" className='block mb-2 font-medium text-white'>
             Enter Email:
           </label>
           <input
@@ -42,10 +42,10 @@ const Login = ({ setLoggedin }) => {
             id="username"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mb-4 p-2 border-2 border-gray-300 rounded-md w-full"
+            className="mb-6 p-2 border-2 border-gray-300 rounded-md w-full"
             required
           />
-          <label htmlFor="password" className='block mb-2 font-medium text-gray-700'>
+          <label htmlFor="password" className='block mb-2 font-medium text-white'>
             Enter Password:
           </label>
           <input
@@ -54,16 +54,16 @@ const Login = ({ setLoggedin }) => {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mb-4 p-2 border-2 border-gray-300 rounded-md w-full"
+            className="mb-6 p-2 border-2 border-gray-300 rounded-md w-full"
             required
           />
           <input type="checkbox" id="remember" name="remember" onChange={rememberMe} className="mr-2" />
-            <label htmlFor="remember" className="text-gray-700 mb-2">Remember me</label>
+            <label htmlFor="remember" className="text-white mb-2">Remember me</label>
           <button type="submit" className="px-2 py-4 w-full bg-blue-900 text-white rounded-md mb-4">
             Submit
           </button>
           <Link to="/signup">
-            <h3 className="text-center text-blue-500">Not a user? Click here to Sign-up</h3>
+            <h3 className="text-center text-white">Not a user? Click here to Sign-up</h3>
           </Link>
         </form>
       </div>
