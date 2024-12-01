@@ -1,13 +1,12 @@
 import React from 'react'; 
 import Navbar from './Navbar';
 import { useNavigate} from 'react-router-dom';
-
+import { auth } from '../auth/firebase';
 const Home = ({ loggedin,setLoggedin }) => { 
     const navigate = useNavigate();
     window.onload = function () {
-        const loggedInState = localStorage.getItem('loggedin') === 'true';
-        setLoggedin(loggedInState);
-        if (loggedInState) {
+        const user = auth.currentUser;
+        if (user) {
             navigate('/home');
         }
         else {

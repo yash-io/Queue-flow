@@ -2,14 +2,17 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
-import { auth, db } from '../firebase'; // Ensure correct import
-import Navbar from '../Navbar';
+import { auth, db } from './firebase'; // Ensure correct import
+import Navbar from '../components/Navbar';
 const Signup = ({ setLoggedin }) => {
   const [data, setData] = useState({
     email: '',
     id: '',
     password: '',
     confirmPassword: '',
+    postsCount: 0,
+    commentsCount: 0,
+    
   });
   const [error, setError] = useState(null);
   const navigate = useNavigate();

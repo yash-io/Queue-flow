@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
-import { auth, db } from '../firebase';
-import Navbar from '../Navbar';
+import { auth, db } from './firebase';
+import Navbar from '../components/Navbar';
 
 const Login = ({ setLoggedin }) => {
   const [email, setEmail] = useState('');
@@ -26,6 +26,7 @@ const Login = ({ setLoggedin }) => {
     localStorage.setItem('password', password);
     localStorage.setItem('loggedin', 'true');
   }
+  
 
   return (
     <div>
@@ -62,6 +63,10 @@ const Login = ({ setLoggedin }) => {
           <button type="submit" className="px-2 py-4 w-full bg-blue-900 text-white rounded-md mb-4">
             Submit
           </button>
+          <Link to='/forgotpin'>
+          <h3 className='text-center text-white' >Forgot Password</h3>
+          </Link>
+          
           <Link to="/signup">
             <h3 className="text-center text-white">Not a user? Click here to Sign-up</h3>
           </Link>
