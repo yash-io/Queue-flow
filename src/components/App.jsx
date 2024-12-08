@@ -5,11 +5,12 @@ import Home from './Home';
 import Signup from '../auth/signup';
 import Forgotpin from '../auth/forgotpin';
 import ProfilePage from '../auth/profile_page';
-import Loading from './loading';
 import { auth } from '../auth/firebase';
+import Loading from './loading';
+import Navbar from './Navbar';
 
 const App = () => {
-  const [loggedin, setLoggedin] = useState(false);
+  const [loggedin, setLoggedin] = useState(null);
   const [isLoading, setIsLoading] = useState(true); // Add a loading state
 
   useEffect(() => {
@@ -20,32 +21,37 @@ const App = () => {
       } else {
         setLoggedin(false);
       }
-      setIsLoading(false); // Authentication state has been determined
+      setIsLoading(false);
+       // Authentication state has been determined
     });
 
     // Clean up the listener on component unmount
     return () => unsubscribe();
   }, []);
+  
 
-  if (isLoading) {
-    // Render a loading indicator while checking auth status
-    return <Loading loggedin={loggedin} />;
-  }
   return (
     <div>
-       <Router>
-        <Routes>
-          <Route path='/home'element={<Home loggedin={loggedin} setLoggedin={setLoggedin} />}/>
-          <Route path="/" element={<Home loggedin={loggedin} setLoggedin={setLoggedin} />} />
-          <Route path="/login" element={<Login loggedin={loggedin} setLoggedin={setLoggedin} />} />
-          <Route path='/signup' element={<Signup />} />
-          <Route path='/forgotpin' element={<Forgotpin/>}  />
-          <Route path='/profilepage' element={<ProfilePage loggedin={loggedin} setLoggedin={setLoggedin} />} />
-        </Routes>
-       </Router>
+      <Router>
+        <Navbar loggedin={loggedin} setLoggedin={setLoggedin} isLoading={isLoading} />
+        
+        {isLoading ? (
+          
+          <Loading />
+        ) : (
+          
+          <Routes>
+            <Route path='/home' element={<Home loggedin={loggedin} setLoggedin={setLoggedin} />} />
+            <Route path='/' element={<Home loggedin={loggedin} setLoggedin={setLoggedin} />} />
+            <Route path='/login' element={<Login loggedin={loggedin} setLoggedin={setLoggedin} />} />
+            <Route path='/signup' element={<Signup />} />
+            <Route path='/forgotpin' element={<Forgotpin />} />
+            <Route path='/profilepage' element={<ProfilePage loggedin={loggedin} setLoggedin={setLoggedin} />} />
+          </Routes>
+        )}
+      </Router>
     </div>
   );
+};
 
-}
-
-export default App
+export default App;

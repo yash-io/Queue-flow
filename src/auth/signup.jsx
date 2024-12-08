@@ -45,11 +45,15 @@ const Signup = ({ setLoggedin }) => {
           email: data.email,
           id: data.id,
           password: data.password,
+          postsCount:0,
+          commentsCount:0,
         });
       })
       .then(() => {
         console.log("User signed up successfully");
-        navigate('/login');
+        navigate('/');
+        setLoggedin(true);
+
       })
       .catch((error) => {
         let errorMessage = "An unexpected error occurred. Please try again.";
@@ -65,13 +69,10 @@ const Signup = ({ setLoggedin }) => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-black via-gray-800 to-black ">
-      <div>
-        <Navbar loggedin={false} />
-      </div>
-      <form onSubmit={handleSignup} className="p-8 m-10 border-2 rounded-md w-full max-w-md xs:max-w-sm bg-gradient-to-r from-blue-500 to-purple-600">
-        <h2 className="text-2xl font-bold mb-6 text-center text-red-100">Sign Up</h2>
+     <form onSubmit={handleSignup} className="p-8 m-10 border-2 rounded-md w-5/7 max-w-md bg-gradient-to-r from-blue-400 to-purple-500">
+        <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
         {error && <div className="text-red-500 mb-4">{error}</div>}
-        <label htmlFor="id" className="block mb-2 font-bold text-white">
+        <label htmlFor="id" className="block mb-2 font-bold">
           Create UserId:
         </label>
         <input
@@ -83,7 +84,7 @@ const Signup = ({ setLoggedin }) => {
           className="mb-4 p-2 border-2 border-gray-300 rounded-md w-full"
           required
         />
-        <label htmlFor="email" className="block mb-2 font-bold text-white">
+        <label htmlFor="email" className="block mb-2 font-bold">
           Enter Email:
         </label>
         <input
@@ -95,7 +96,7 @@ const Signup = ({ setLoggedin }) => {
           className="mb-4 p-2 border-2 border-gray-300 rounded-md w-full"
           required
         />
-        <label htmlFor="password" className="block mb-2 font-bold text-white">
+        <label htmlFor="password" className="block mb-2 font-bold">
           Create Password:
         </label>
         <input
@@ -107,7 +108,7 @@ const Signup = ({ setLoggedin }) => {
           className="mb-4 p-2 border-2 border-gray-300 rounded-md w-full"
           required
         />
-        <label htmlFor="confirmPassword" className="block mb-2 font-bold text-white">
+        <label htmlFor="confirmPassword" className="block mb-2 font-bold">
           Confirm Password:
         </label>
         <input
@@ -119,12 +120,9 @@ const Signup = ({ setLoggedin }) => {
           className="mb-4 p-2 border-2 border-gray-300 rounded-md w-full"
           required
         />
-        <button type="submit" className="px-2 py-4 w-full bg-blue-900 text-white rounded-md mb-4">
+        <button type="submit" className="px-4 py-2 w-full bg-blue-900 text-white rounded-md mb-4">
           Submit
         </button>
-        <Link to="/login">
-          <h3 className="text-center text-white">Already a user? Click here to Login</h3>
-        </Link>
       </form>
     </div>
   );

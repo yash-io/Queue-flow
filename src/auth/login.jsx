@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
-import { auth, db } from './firebase';
+import {  signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from './firebase';
 import Navbar from '../components/Navbar';
 
 const Login = ({ setLoggedin }) => {
@@ -15,6 +14,7 @@ const Login = ({ setLoggedin }) => {
     try {
    await signInWithEmailAndPassword(auth, email, password);
       setLoggedin(true);
+      console.log('User logged in successfully');
       localStorage.setItem('loggedin', 'true'); // Save login state to local storage
       navigate('/home');
     } catch (error) {
@@ -32,7 +32,7 @@ const Login = ({ setLoggedin }) => {
     <div>
       <Navbar loggedin={false} />
       <div className="flex justify-center items-center max-w-full bg-black min-h-screen bg-gradient-to-r from-black via-gray-800 to-black">
-        <form onSubmit={handleLogin} className="p-8 m-10 border-2 rounded-md w-full xs:max-w-sm  bg-gradient-to-r from-blue-500 to-purple-600">
+        <form onSubmit={handleLogin} className="p-8 m-10 border-2 rounded-md w-full xs:max-w-sm  bg-gradient-to-r from-blue-400 to-purple-500">
           <h2 className="text-3xl font-medium mb-6 text-center text-red-100">Login</h2>
           <label htmlFor="username" className='block mb-2 font-medium text-white'>
             Enter Email:

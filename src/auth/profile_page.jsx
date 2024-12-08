@@ -93,7 +93,7 @@ const ProfilePage = ({ loggedin, setLoggedin }) => {
         )}
 
         {/* Upload Profile Picture Form */}
-        <button type="submit" onClick={picchange} className="bg-blue-500 text-white px-4 py-2 rounded">
+        <button type="submit" onClick={picchange} className="bg-blue-500 text-white px-4 py-2 rounded mb-6">
             {!ProfilePicChange ? 'Change pic' : 'No change'}
         </button>
         {ProfilePicChange && 
@@ -105,7 +105,7 @@ const ProfilePage = ({ loggedin, setLoggedin }) => {
           onChange={handleProfilePicChange}
           className="mb-2 text-white"
         />
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
+        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded mb-6">
           Upload Picture
         </button>
        </form>
