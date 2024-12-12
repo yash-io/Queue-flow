@@ -61,6 +61,7 @@ const ProfilePage = ({ loggedin, setLoggedin }) => {
   
           setUserData((prevData) => ({ ...prevData, profilePic: base64String }));
           setMessage('Profile picture updated successfully!');
+          setProfilePicChange(false);
         };
       } catch (error) {
         console.error('Error uploading profile picture:', error);
@@ -73,9 +74,9 @@ const ProfilePage = ({ loggedin, setLoggedin }) => {
   }
 
   return (
-    <div>
+    <div className='bg-gradient-to-r from-black via-gray-800 to-black xss:flex '>
       <Navbar loggedin={loggedin} setLoggedin={setLoggedin} />
-      <div className="p-8 max-w-full mx-auto text-white bg-gradient-to-r from-black via-gray-800 to-black min-h-screen pt-20">
+      <div className="p-8 max-w-full mx-auto text-white  min-h-screen pt-20">
         <h1 className="text-2xl font-bold mb-4">Profile Page</h1>
         {message && <p className="mb-4">{message}</p>}
 

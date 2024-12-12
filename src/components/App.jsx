@@ -11,17 +11,17 @@ import Navbar from './Navbar';
 
 const App = () => {
   const [loggedin, setLoggedin] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); // Add a loading state
+  const [isLoading, setIsLoading] = useState(false); //used for loading screen
 
   useEffect(() => {
-    // Set up the listener for authentication state changes
+    
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setLoggedin(true);
+        setIsLoading(false);
       } else {
         setLoggedin(false);
       }
-      setIsLoading(false);
        // Authentication state has been determined
     });
 

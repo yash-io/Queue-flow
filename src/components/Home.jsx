@@ -16,11 +16,9 @@ const Home = ({ loggedin,setLoggedin }) => {
          
     return (
         <div>
-            <div className="flex justify-center items-center bg-gradient-to-r from-black via-gray-800 to-black flex min-h-screen min-w-full pt-20 ">
+            <div className="flex justify-center items-center bg-gradient-to-r from-black via-gray-800 to-black min-h-screen min-w-full pt-20 ">
                 {!loggedin && <h1 className="text-white">First do login.</h1>}
-                {loggedin &&    <Content/>}
-
-             
+                {loggedin &&    <Content/>}            
             </div>
         </div>
     );

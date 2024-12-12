@@ -20,14 +20,18 @@ const CreatePost = () => {
         title,
         content,
         userId: user.uid,
+        username: user.id,
         createdAt: Timestamp.fromDate(new Date()),
       });
       setTitle('');
       setContent('');
       setMessage('Post created successfully!');
     } catch (error) {
+      setTimeout(()=>{
       console.error('Error creating post:', error);
       setMessage('Failed to create post.');
+      },500);
+      
     }
   };
 

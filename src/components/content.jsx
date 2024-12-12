@@ -9,13 +9,13 @@ const Content = () => {
     setCreatepost(!createpost);
   }
   return (
-    <div className='w-full'>
-      <div className="flex justify-center items-center bg-gradient-to-r from-black via-gray-800 to-black min-h-screen min-w-full pt-20">
-        <div className='border-2 border-white p-10 rounded-md'>
+    <div className='min-w-full min-h-screen flex justify-center bg-gradient-to-r from-black via-gray-800 to-black top-0 sticky'>
+      <div className="sm:w-1/2 xss:w-full">
+        <div className='border-2  sm:border-white xss:border-black p-10 rounded-md'>
           <button onClick={createPost} className='px-4 py-2 rounded-md bg-white'>
-            {!createpost ? 'Viewposts' : 'Create Post'}
+            {createpost ? 'Viewposts' : 'Create Post'}
           </button>
-        {createpost ? <PostsList />:<CreatePost/>}
+        {!createpost ? <PostsList />:<CreatePost/>}
           
         </div>
        
