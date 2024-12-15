@@ -15,7 +15,7 @@ const Content = () => {
           <button onClick={createPost} className='px-4 py-2 rounded-md bg-white'>
             {createpost ? 'Viewposts' : 'Create Post'}
           </button>
-        {!createpost ? <PostsList />:<CreatePost/>}
+        {!createpost ? <PostsList />:<CreatePost createpost={createpost} setCreatepost={setCreatepost} />}
           
         </div>
        

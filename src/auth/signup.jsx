@@ -44,6 +44,7 @@ const Signup = ({ setLoggedin }) => {
         return setDoc(doc(db, 'users', user.uid), {
           email: data.email,
           id: data.id,
+          profilePic: 'https://via.placeholder.com/150',
           password: data.password,
           postsCount:0,
           commentsCount:0,

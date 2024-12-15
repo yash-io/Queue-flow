@@ -1,7 +1,7 @@
 // src/components/Posts.jsx
 import React, { useState, useEffect } from 'react';
 import { db, auth } from '../auth/firebase'; // Adjust the path if necessary
-import { collection, query, orderBy, onSnapshot, deleteDoc, doc } from 'firebase/firestore';
+import { collection, query, orderBy, onSnapshot, deleteDoc, doc,getDoc,updateDoc } from 'firebase/firestore';
 
 const PostsList = () => {
   const [posts, setPosts] = useState([]);
@@ -23,7 +23,11 @@ const PostsList = () => {
 
   const handleDelete = async (postId) => {
     try {
+      const userDocRef = doc(db, 'users', user.uid);
+      const userDoc = await getDoc(userDocRef);
+      const userData = userDoc.data();
       await deleteDoc(doc(db, 'posts', postId));
+      await updateDoc(userDocRef, { postsCount: userData.postsCount - 1 });
       setPosts(posts.filter(post => post.id !== postId));
     } catch (error) {
       console.error('Error deleting post:', error);

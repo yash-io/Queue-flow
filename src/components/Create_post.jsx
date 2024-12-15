@@ -1,9 +1,9 @@
 // src/components/CreatePost.jsx
 import React, { useState } from 'react';
 import { db,auth } from '../auth/firebase';
-import { collection, addDoc, Timestamp } from 'firebase/firestore';
+import {doc,getDoc, collection, addDoc, Timestamp,updateDoc } from 'firebase/firestore';
 
-const CreatePost = () => {
+const CreatePost = ({createpost,setCreatepost}) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [message, setMessage] = useState('');
@@ -16,22 +16,37 @@ const CreatePost = () => {
       return;
     }
     try {
-      await addDoc(collection(db, 'posts'), {
-        title,
-        content,
-        userId: user.uid,
-        username: user.id,
-        createdAt: Timestamp.fromDate(new Date()),
-      });
-      setTitle('');
-      setContent('');
-      setMessage('Post created successfully!');
+      // Retrieve the user's data from Firestore
+      const userDocRef = doc(db, 'users', user.uid);
+      const userDoc = await getDoc(userDocRef);
+
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        const userId = userData.id; // The custom 'id' from signup
+
+        // Create the post with 'createdBy' set to the user's custom 'id'
+        await addDoc(collection(db, 'posts'), {
+          title,
+          content,
+          userId: user.uid,
+          createdBy: userId,
+          createdAt: Timestamp.fromDate(new Date()),
+        });
+
+        // Update the user's postsCount
+        await updateDoc(userDocRef, { postsCount: (userData.postsCount || 0) + 1 });
+
+        setTitle('');
+        setContent('');
+        setCreatepost(!createpost);
+        alert('Post created successfully!');
+      } else {
+        console.error('No such user document!');
+        setMessage('User data not found.');
+      }
     } catch (error) {
-      setTimeout(()=>{
       console.error('Error creating post:', error);
       setMessage('Failed to create post.');
-      },500);
-      
     }
   };
 
