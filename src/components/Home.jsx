@@ -1,18 +1,21 @@
-import React from 'react'; 
+import React,{useEffect} from 'react'; 
 import Content from './content';
 import { useNavigate} from 'react-router-dom';
 import { auth } from '../auth/firebase';
 const Home = ({ loggedin,setLoggedin }) => { 
     const navigate = useNavigate();
-    window.onload = function () {
-        const user = auth.currentUser;
-        if (user) {
-            navigate('/home');
-        }
-        else {
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+          if (user) {
+            setLoggedin(true);
+          } else {
+            setLoggedin(false);
             navigate('/login');
-        }
-    };
+          }
+        });
+        // Clean up the listener on component unmount
+        return () => unsubscribe();
+      }, [navigate, setLoggedin]);
          
     return (
         <div>

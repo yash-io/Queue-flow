@@ -24,8 +24,7 @@ const Navbar = ({ loggedin, setLoggedin, isLoading }) => {
         </nav>
     );
 }
-
-
+else{
   return (
       <nav className="fixed top-0 left-0 w-full text-white bg-black shadow-md p-4 z-50 border-b-white border-b-2 rounded-md">
           <div className="flex justify-between items-center">
@@ -40,6 +39,7 @@ const Navbar = ({ loggedin, setLoggedin, isLoading }) => {
           </div>
       </nav>
   );
+}
 };
 
 export default Navbar;
