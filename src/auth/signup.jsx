@@ -70,7 +70,7 @@ const Signup = ({ setLoggedin }) => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-black via-gray-800 to-black ">
-     <form onSubmit={handleSignup} className="p-8 m-10 border-2 rounded-md w-5/7 max-w-md bg-gradient-to-r from-blue-400 to-purple-500">
+     <form onSubmit={handleSignup} className="p-8 m-10 border-2 rounded-md w-1/4 max-w-md bg-gradient-to-r from-blue-400 to-purple-500">
         <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
         {error && <div className="text-red-500 mb-4">{error}</div>}
         <label htmlFor="id" className="block mb-2 font-bold">
@@ -124,6 +124,9 @@ const Signup = ({ setLoggedin }) => {
         <button type="submit" className="px-4 py-2 w-full bg-blue-900 text-white rounded-md mb-4">
           Submit
         </button>
+        <Link to="/login">
+                    <h3 className="text-center text-white mt-4">Already a user? Click here to login</h3>
+        </Link>
       </form>
     </div>
   );
