@@ -63,16 +63,18 @@ const PostsList = () => {
 
   const Singlepage = ({ post }) => {
     return (
-      <div className="p-4 max-w-2xl mx-auto bg-gray-800 rounded-lg shadow-lg">
+      <div className="p-4 max-w-2xl mx-auto bg-gray-800 rounded-lg shadow-lg top-20 sticky">
         <button onClick={handleBack} className="bg-blue-500 text-white px-4 py-2 rounded mb-4 hover:bg-blue-600">
           Back
         </button>
         <p className="text-white mt-4">Created by: {post.createdBy}</p>
         <p className="text-white mb-8">Created at: {post.createdAt.toDate().toLocaleString()}</p>
-        <h2 className="text-3xl font-bold text-white mt-4 mb-4 xss:text-lg">{post.title}</h2>
-        <div className='border-2 border-white rounded-md p-4 mb-8 bg-gray-700'>
+       <div className='p-2 border-2 border-gray-700 rounded-sm'>
+       <h2 className="text-3xl font-bold text-white ml-8 mt-4 mb-4 xss:text-xxl font-mono">{post.title}</h2>
+        <div className='p-2 ml-8 mb-8 bg-gray-800'>
           <p className="text-white">{post.content}</p>
         </div>
+       </div>
 
         <div className='mt-4'>
           <Reply postId={post.id} />
@@ -82,7 +84,7 @@ const PostsList = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-900 min-h-screen">
+    <div className="p-6 min-h-screen">
       <h2 className="text-3xl font-bold mb-6 text-white">Posts</h2>
       {selectedPost ? (
         <Singlepage post={selectedPost} />
@@ -106,7 +108,7 @@ const PostsList = () => {
                 >
                   Delete
                 </button>
-                {/* Add Edit button and functionality here */}
+              
               </div>
             )}
           </div>

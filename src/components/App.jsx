@@ -36,12 +36,13 @@ const App = () => {
             <Loading />
           ) : (
             <Routes>
-              <Route path='/home' element={<Home loggedin={loggedin} setLoggedin={setLoggedin} />} />
+              <Route path='/home' element={<Home loggedin={loggedin} setLoggedin={setLoggedin} create={false}/>} />
               <Route path='/' element={<Home loggedin={loggedin} setLoggedin={setLoggedin} />} />
               <Route path='/login' element={<Login loggedin={loggedin} setLoggedin={setLoggedin} />} />
               <Route path='/signup' element={<Signup />} />
               <Route path='/forgotpin' element={<Forgotpin />} />
               <Route path='/profilepage' element={<ProfilePage loggedin={loggedin} setLoggedin={setLoggedin} />} />
+              <Route path='/createpost' element={<Home loggedin={loggedin} setLoggedin={setLoggedin} create={true}/>}></Route>
             </Routes>
           )}
         </div>

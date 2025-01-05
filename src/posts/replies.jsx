@@ -65,6 +65,11 @@ const Reply = ({ postId, parentReplyId = null }) => {
   return (
     <div className="ml-6 mt-4 space-y-6">
       {/* Main reply form for the first-level replies */}
+      {parentReplyId===null && 
+      <div>
+        {replies.length === 0 && <p className="text-gray-400 text-lg mt-2">No replies yet.</p>}
+      </div>
+      }
       {parentReplyId === null && (
         <form onSubmit={handleReply} className="p-4 bg-gray-900 rounded-lg shadow-md">
           <textarea
@@ -77,15 +82,19 @@ const Reply = ({ postId, parentReplyId = null }) => {
           <button type="submit" className="mt-4 bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 focus:outline-none">
             Reply
           </button>
-          <h2 className="mt-6 text-xl text-white font-semibold">Replies</h2>
+          
         </form>
       )}
-
+      {parentReplyId===null && 
+      <div>
+        {replies.length > 0 && <h2 className="mt-6 text-xl text-white font-semibold">Replies</h2>}
+      </div>
+      }
       {replies.map((reply) => (
-        <div key={reply.id} className="bg-gray-800 rounded-lg shadow-md p-4 mb-6">
+        <div key={reply.id} className="bg-gray-700 rounded-lg shadow-md p-4 mb-6">
           <p className="text-white">{reply.content}</p>
-          <div className="flex justify-between text-sm text-gray-400 mt-2">
-            <span>Replied by: {reply.createdBy}</span>
+          <div className="flex-col justify-between text-sm text-gray-400 mt-2">
+            <span className='block'>Replied by: {reply.createdBy}</span>
             <span>Replied at: {reply.createdAt.toDate().toLocaleString()}</span>
           </div>
           {user && user.uid === reply.userId && (

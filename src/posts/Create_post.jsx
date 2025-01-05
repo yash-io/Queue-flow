@@ -51,7 +51,7 @@ const CreatePost = ({createpost,setCreatepost}) => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 border-2 border-gray-700 rounded-md">
       <h2 className="text-2xl font-bold mb-4 text-white">Create a Post</h2>
       {message && <p className="mb-4 text-white">{message}</p>}
       <form onSubmit={handleSubmit}>
@@ -62,7 +62,7 @@ const CreatePost = ({createpost,setCreatepost}) => {
             id="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
+            className="w-full p-2  bg-gray-700 border border-gray-300 rounded text-white"
             required
           />
         </div>
@@ -72,7 +72,7 @@ const CreatePost = ({createpost,setCreatepost}) => {
             id="content"
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
+            className="w-full p-2 border border-gray-300 rounded bg-gray-700 text-white"
             required
           />
         </div>

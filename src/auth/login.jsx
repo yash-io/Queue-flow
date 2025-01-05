@@ -1,74 +1,91 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import {  signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from './firebase';
-import Navbar from '../components/Navbar';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "./firebase";
+import Navbar from "../components/Navbar";
 
 const Login = ({ setLoggedin }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-   await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth, email, password);
       setLoggedin(true);
-      console.log('User logged in successfully');
-      localStorage.setItem('loggedin', 'true'); // Save login state to local storage
-      navigate('/home');
+      console.log("User logged in successfully");
+      localStorage.setItem("loggedin", "true"); // Save login state to local storage
+      navigate("/home");
     } catch (error) {
       console.error("Error logging in:", error);
     }
   };
+
   const rememberMe = () => {
-    localStorage.setItem('email', email);
-    localStorage.setItem('password', password);
-    localStorage.setItem('loggedin', 'true');
-  }
-  
+    localStorage.setItem("email", email);
+    localStorage.setItem("password", password);
+    localStorage.setItem("loggedin", "true");
+  };
 
   return (
     <div>
       <Navbar loggedin={false} />
-      <div className="flex justify-center items-center max-w-full bg-black min-h-screen bg-gradient-to-r from-black via-gray-800 to-black">
-        <form onSubmit={handleLogin} className="p-8 m-10 border-2 rounded-md w-full xs:max-w-sm  bg-blue-500">
-          <h2 className="text-3xl font-medium mb-6 text-center text-red-100">Login</h2>
-          <label htmlFor="username" className='block mb-2 font-medium text-white'>
-            Enter Email:
+      <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-gray-900 via-gray-800 to-black">
+        <form
+          onSubmit={handleLogin}
+          className="p-6 w-full xs:max-w-sm sm:max-w-md bg-gradient-to-b from-gray-800 to-gray-700 shadow-lg rounded-lg border border-gray-600"
+        >
+          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 text-white">
+            Login
+          </h2>
+          <label htmlFor="email" className="block mb-2 font-medium text-gray-200">
+            Email Address:
           </label>
           <input
             type="email"
-            name="username"
-            id="username"
+            id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mb-6 p-2 border-2 border-gray-300 rounded-md w-full"
+            className="mb-4 p-3 w-full text-gray-900 bg-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            placeholder="Enter your email"
             required
           />
-          <label htmlFor="password" className='block mb-2 font-medium text-white'>
-            Enter Password:
+          <label htmlFor="password" className="block mb-2 font-medium text-gray-200">
+            Password:
           </label>
           <input
             type="password"
-            name="password"
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mb-6 p-2 border-2 border-gray-300 rounded-md w-full"
+            className="mb-4 p-3 w-full text-gray-900 bg-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            placeholder="Enter your password"
             required
           />
-          <input type="checkbox" id="remember" name="remember" onChange={rememberMe} className="mr-2" />
-            <label htmlFor="remember" className="text-white mb-2">Remember me</label>
-          <button type="submit" className="px-2 py-4 w-full bg-blue-900 text-white rounded-md mb-4">
-            Submit
+          <div className="flex items-center mb-4">
+            <input
+              type="checkbox"
+              id="remember"
+              name="remember"
+              onChange={rememberMe}
+              className="mr-2 accent-blue-600"
+            />
+            <label htmlFor="remember" className="text-gray-300">
+              Remember me
+            </label>
+          </div>
+          <button
+            type="submit"
+            className="w-full py-3 mb-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-all"
+          >
+            Login
           </button>
-          <Link to='/forgotpin'>
-          <h3 className='text-center text-white' >Forgot Password</h3>
+          <Link to="/forgotpin" className="block text-center text-blue-400 hover:underline mb-4">
+            Forgot Password?
           </Link>
-          
-          <Link to="/signup">
-            <h3 className="text-center text-white">Not a user? Click here to Sign-up</h3>
+          <Link to="/signup" className="block text-center text-gray-300 hover:underline">
+            Not a user? <span className="text-blue-400">Sign Up</span>
           </Link>
         </form>
       </div>
