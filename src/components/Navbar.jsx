@@ -8,6 +8,7 @@ const Navbar = ({ loggedin, setLoggedin, isLoading }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const Logout = () => {
+    setIsMobileMenuOpen(false);
     signOut(auth)
       .then(() => {
         setLoggedin(false);
