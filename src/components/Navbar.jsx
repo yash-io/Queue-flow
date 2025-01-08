@@ -22,7 +22,7 @@ const Navbar = ({ loggedin, setLoggedin, isLoading }) => {
   if (isLoading) {
     return (
       <nav className="fixed top-0 left-0 w-full text-white bg-black shadow-md p-4 z-50 border-b-white border-b-2 rounded-md">
-        <div className="text-lg font-bold">Queue-flow</div>
+        <div className="text-lg font-thin text-white">Queue-flow</div>
       </nav>
     );
   }
@@ -32,7 +32,7 @@ const Navbar = ({ loggedin, setLoggedin, isLoading }) => {
       <nav className="fixed top-0 left-0 w-full text-white bg-black shadow-md p-4 z-50 border-b-white border-b-2 rounded-md">
         <div className="flex justify-between items-center">
         
-          <div className="text-lg font-bold">Queue-flow</div>
+          <div className="text-lg font-thin text-white">Queue-flow</div>
 
           {/* Desktop */}
           <div className="hidden md:flex space-x-6">
@@ -56,7 +56,10 @@ const Navbar = ({ loggedin, setLoggedin, isLoading }) => {
             className="md:hidden text-white font-bold"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            ☰
+        
+            {
+              !isMobileMenuOpen ?(<>☰</>):(<>❌</>)
+            }
           </button>
         </div>
 
@@ -71,7 +74,7 @@ const Navbar = ({ loggedin, setLoggedin, isLoading }) => {
             {loggedin && (
               <button
                 onClick={Logout}
-                className="text-white hover:border-white font-bold rounded-md"
+                className="text-white text-lg hover:border-white font-bold rounded-md"
               >
                 Logout
               </button>
