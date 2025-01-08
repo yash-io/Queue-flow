@@ -74,7 +74,7 @@ const Signup = ({ setLoggedin }) => {
       <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-gray-900 via-gray-800 to-black">
         <form
           onSubmit={handleSignup}
-          className="p-6 w-full xs:max-w-sm sm:max-w-md bg-gradient-to-b from-gray-800 to-gray-700 shadow-lg rounded-lg border border-gray-600"
+          className="p-6 w-full xs:max-w-sm sm:max-w-md bg-gradient-to-b from-gray-800 to-gray-700 shadow-lg rounded-lg border border-gray-600 mx-6"
         >
           <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 text-white">
             Sign Up

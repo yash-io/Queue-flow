@@ -11,7 +11,7 @@ import Navbar from './Navbar';
 
 const App = () => {
   const [loggedin, setLoggedin] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); //used for loading screen
+  const [isLoading, setIsLoading] = useState(true); 
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -20,7 +20,7 @@ const App = () => {
       } else {
         setLoggedin(false);
       }
-      setIsLoading(false); // Authentication state has been determined
+      setIsLoading(false); 
     });
 
     // Clean up the listener on component unmount
