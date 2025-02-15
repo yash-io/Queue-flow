@@ -21,24 +21,21 @@ const Home = ({ loggedin, setLoggedin, create }) => {
   }, [navigate, setLoggedin]);
 
   return (
-    <div>
-      <div className="flex justify-center items-center bg-gray-900 min-h-screen w-full pt-20">
-        {!loggedin && <h1 className="text-white">First do login.</h1>}
-        {loggedin && (
-          <div className="w-full flex justify-center bg-gray-900 top-0 sticky">
-            {/* narrow width and expand on smaller screens */}
-            <div className="lg:w-1/2 md:w-1/2 xs:w-full w-full p-4">
-              <div className="w-full rounded-md">
-                {!createpost ? (
-                  <PostsList />
-                ) : (
-                  <CreatePost createpost={createpost} setCreatepost={setCreatepost} />
-                )}
-              </div>
+    <div className="flex justify-center items-center bg-gray-900 min-h-screen w-full pt-20">
+      {!loggedin && <h1 className="text-white">First do login.</h1>}
+      {loggedin && (
+        <div className="w-full flex justify-center bg-gray-900 top-0 sticky">
+          <div className="w-full max-w-2xl p-4">
+            <div className="w-full rounded-md">
+              {!createpost ? (
+                <PostsList />
+              ) : (
+                <CreatePost createpost={createpost} setCreatepost={setCreatepost} />
+              )}
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
