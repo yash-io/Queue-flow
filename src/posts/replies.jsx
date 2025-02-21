@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db, auth } from '../auth/firebase'; 
-import { collection, addDoc, query, orderBy, onSnapshot, Timestamp, doc, deleteDoc } from 'firebase/firestore';
+import { collection, addDoc, query, orderBy, onSnapshot, Timestamp, doc, deleteDoc, updateDoc, increment } from 'firebase/firestore';
 
 const Reply = ({ postId, parentReplyId = null }) => {
   const [replies, setReplies] = useState([]);
@@ -42,6 +42,13 @@ const Reply = ({ postId, parentReplyId = null }) => {
         createdAt: Timestamp.fromDate(new Date()),
         parentReplyId,
       });
+
+      // Increment the commentsCount in the user's document
+      const userDocRef = doc(db, 'users', user.uid);
+      await updateDoc(userDocRef, {
+        commentsCount: increment(1)
+      });
+
       setContent('');
       setReplyingTo(null); // Hide the reply form after submitting
     } catch (error) {
@@ -57,6 +64,12 @@ const Reply = ({ postId, parentReplyId = null }) => {
 
     try {
       await deleteDoc(doc(db, 'posts', postId, 'replies', replyId));
+
+      // Decrement the commentsCount in the user's document
+      const userDocRef = doc(db, 'users', user.uid);
+      await updateDoc(userDocRef, {
+        commentsCount: increment(-1)
+      });
     } catch (error) {
       console.error('Error deleting reply:', error);
     }
@@ -65,11 +78,11 @@ const Reply = ({ postId, parentReplyId = null }) => {
   return (
     <div className="ml-6 mt-4 space-y-6">
       {/* Main reply form for the first-level replies */}
-      {parentReplyId===null && 
-      <div>
-        {replies.length === 0 && <p className="text-gray-400 text-lg mt-2">No replies yet.</p>}
-      </div>
-      }
+      {parentReplyId === null && (
+        <div>
+          {replies.length === 0 && <p className="text-gray-400 text-lg mt-2">No replies yet.</p>}
+        </div>
+      )}
       {parentReplyId === null && (
         <form onSubmit={handleReply} className="p-4 bg-gray-900 rounded-lg shadow-md">
           <textarea
@@ -82,14 +95,13 @@ const Reply = ({ postId, parentReplyId = null }) => {
           <button type="submit" className="mt-4 bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 focus:outline-none">
             Reply
           </button>
-          
         </form>
       )}
-      {parentReplyId===null && 
-      <div>
-        {replies.length > 0 && <h2 className="mt-6 text-xl text-white font-semibold">Replies</h2>}
-      </div>
-      }
+      {parentReplyId === null && (
+        <div>
+          {replies.length > 0 && <h2 className="mt-6 text-xl text-white font-semibold">Replies</h2>}
+        </div>
+      )}
       {replies.map((reply) => (
         <div key={reply.id} className="bg-gray-700 rounded-lg shadow-md p-4 mb-6">
           <p className="text-white">{reply.content}</p>
@@ -114,7 +126,7 @@ const Reply = ({ postId, parentReplyId = null }) => {
             {replyingTo === reply.id ? 'Cancel' : 'Reply'}
           </button>
 
-          {/* Show Reply Form */}
+          {/* Show Reply Form on clicking the reply button */}
           {replyingTo === reply.id && (
             <form onSubmit={handleReply} className="mt-4">
               <textarea
@@ -130,7 +142,7 @@ const Reply = ({ postId, parentReplyId = null }) => {
             </form>
           )}
 
-          {/* Recursively show nested replies */}
+          {/* Recursively show remaining nested replies */}
           <Reply postId={postId} parentReplyId={reply.id} />
         </div>
       ))}

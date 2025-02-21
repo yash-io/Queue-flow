@@ -27,7 +27,7 @@ const Home = ({ loggedin, setLoggedin, create }) => {
         {loggedin && (
           <div className="w-full flex justify-center bg-gray-900 top-0 sticky">
             {/* narrow width and expand on smaller screens */}
-            <div className="lg:w-1/2 md:w-1/2 xs:w-full w-full p-4">
+            <div className="lg:w-1/2 md:w-1/2 xs:w-full w-full ">
               <div className=" w-fullp-10 rounded-md">
                 {!createpost ? (
                   <PostsList />

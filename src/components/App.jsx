@@ -8,6 +8,7 @@ import ProfilePage from '../auth/profile_page';
 import { auth } from '../auth/firebase';
 import Loading from './loading';
 import Navbar from './Navbar';
+import Chatroom from './chatroom';
 
 const App = () => {
   const [loggedin, setLoggedin] = useState(null);
@@ -28,7 +29,7 @@ const App = () => {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gray-950">
       <Router>
         <Navbar loggedin={loggedin} setLoggedin={setLoggedin} isLoading={isLoading} />
         <div className="flex-grow">
@@ -43,6 +44,7 @@ const App = () => {
               <Route path='/forgotpin' element={<Forgotpin />} />
               <Route path='/profilepage' element={<ProfilePage loggedin={loggedin} setLoggedin={setLoggedin} />} />
               <Route path='/createpost' element={<Home loggedin={loggedin} setLoggedin={setLoggedin} create={true}/>}></Route>
+              <Route path='/chatroom' element={<Chatroom loggedin={loggedin} />} ></Route>
             </Routes>
           )}
         </div>
