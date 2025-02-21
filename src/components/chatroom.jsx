@@ -94,7 +94,7 @@ const Chatroom = () => {
           </div>
         ))}
       </div>
-      <form className="flex flex-col p-4 bg-gray-200 dark:bg-gray-700 fixed bottom-0 w-full md:w-2/3 mb-20 md:mb-0" onSubmit={handleSendMessage}>
+      <form className="flex flex-col p-4 bg-gray-200 dark:bg-gray-700 fixed bottom-0 w-full md:w-2/3 md:p-2" onSubmit={handleSendMessage}>
         {replyingTo && (
           <div className="mb-2 p-2 bg-gray-300 dark:bg-gray-600 rounded">
             <p className="text-sm text-gray-700 dark:text-gray-300">Replying to: {replyingTo.text.slice(0, 5)}...</p>
