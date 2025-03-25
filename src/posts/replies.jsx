@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { db, auth } from '../auth/firebase'; 
-import { collection, addDoc, query, orderBy, onSnapshot, Timestamp, doc, deleteDoc, updateDoc, increment } from 'firebase/firestore';
+import { collection, addDoc, query, orderBy, onSnapshot, Timestamp, doc, deleteDoc, updateDoc, increment, getDoc } from 'firebase/firestore';
 
 const Reply = ({ postId, parentReplyId = null }) => {
   const [replies, setReplies] = useState([]);
   const [content, setContent] = useState('');
   const [replyingTo, setReplyingTo] = useState(null); // Track which reply is being replied to
+  const [parentMessage, setParentMessage] = useState(null); // Store parent message content
   const user = auth.currentUser;
 
   useEffect(() => {
@@ -27,6 +28,18 @@ const Reply = ({ postId, parentReplyId = null }) => {
     return () => unsubscribe();
   }, [postId, parentReplyId]);
 
+  useEffect(() => {
+    const fetchParentMessage = async () => {
+      if (parentReplyId) {
+        const parentDoc = await getDoc(doc(db, 'posts', postId, 'replies', parentReplyId));
+        if (parentDoc.exists()) {
+          setParentMessage(parentDoc.data());
+        }
+      }
+    };
+    fetchParentMessage();
+  }, [parentReplyId, postId]);
+
   const handleReply = async (e) => {
     e.preventDefault();
     if (!user) {
@@ -40,7 +53,7 @@ const Reply = ({ postId, parentReplyId = null }) => {
         userId: user.uid,
         createdBy: user.displayName || user.email,
         createdAt: Timestamp.fromDate(new Date()),
-        parentReplyId,
+        parentReplyId: replyingTo, // Set parentReplyId to the reply being replied to
       });
 
       // Increment the commentsCount in the user's document
@@ -77,6 +90,13 @@ const Reply = ({ postId, parentReplyId = null }) => {
 
   return (
     <div className="ml-6 mt-4 space-y-6">
+      {/* Display parent message */}
+      {parentMessage && (
+        <div className="bg-gray-800 p-2 rounded-lg mb-4">
+          <p className="text-gray-400">Replying to: {parentMessage.content}</p>
+        </div>
+      )}
+
       {/* Main reply form for the first-level replies */}
       {parentReplyId === null && (
         <div>
