@@ -1,6 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { db, auth } from "../auth/firebase";
-import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, deleteDoc, doc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  query,
+  orderBy,
+  onSnapshot,
+  serverTimestamp,
+  deleteDoc,
+  doc,
+  getDocs,
+  limit,
+  startAfter
+} from "firebase/firestore";
 
 const Chatroom = () => {
   const [messages, setMessages] = useState([]);
@@ -8,11 +20,11 @@ const Chatroom = () => {
   const [replyingTo, setReplyingTo] = useState(null);
 
   useEffect(() => {
-    const q = query(collection(db, "messages"), orderBy("createdAt"));
+    const q = query(collection(db, "messages"), orderBy("createdAt"), limit(200));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const messages = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data()
+      const messages = snapshot.docs.map((d) => ({
+        id: d.id,
+        ...d.data()
       }));
       setMessages(messages);
     });
@@ -25,13 +37,13 @@ const Chatroom = () => {
       const now = new Date();
       const q = query(collection(db, "messages"));
       const snapshot = await getDocs(q);
-      snapshot.forEach((doc) => {
-        const message = doc.data();
-        if (message.createdAt && (now - message.createdAt.toDate()) > 24 * 60 * 60 * 1000) {
-          deleteDoc(doc.ref);
+      snapshot.forEach((d) => {
+        const message = d.data();
+        if (message.createdAt && now - message.createdAt.toDate() > 24 * 60 * 60 * 1000) {
+          deleteDoc(d.ref);
         }
       });
-    }, 60 * 60 * 1000); // Check every hour
+    }, 60 * 60 * 1000);
 
     return () => clearInterval(interval);
   }, []);
@@ -63,6 +75,25 @@ const Chatroom = () => {
   const handleReplyMessage = (message) => {
     setReplyingTo(message);
     setNewMessage(`@${message.text.slice(0, 5)}... `);
+  };
+
+  const handleSyncNow = async () => {
+    const last = messages[messages.length - 1];
+    const base = query(collection(db, "messages"), orderBy("createdAt"));
+    const q = last?.createdAt ? query(base, startAfter(last.createdAt), limit(200)) : query(base, limit(200));
+    const snapshot = await getDocs(q);
+    if (snapshot.empty) return;
+    setMessages((prev) => {
+      const byId = new Map(prev.map((m) => [m.id, m]));
+      snapshot.docs.forEach((d) => {
+        byId.set(d.id, { id: d.id, ...d.data() });
+      });
+      return Array.from(byId.values()).sort((a, b) => {
+        const at = a.createdAt?.toMillis?.() ?? 0;
+        const bt = b.createdAt?.toMillis?.() ?? 0;
+        return at - bt;
+      });
+    });
   };
 
   return (
@@ -98,10 +129,7 @@ const Chatroom = () => {
         {replyingTo && (
           <div className="mb-2 p-2 bg-gray-300 dark:bg-gray-600 rounded">
             <p className="text-sm text-gray-700 dark:text-gray-300">Replying to: {replyingTo.text.slice(0, 5)}...</p>
-            <button
-              onClick={() => setReplyingTo(null)}
-              className="text-red-500 text-sm"
-            >
+            <button onClick={() => setReplyingTo(null)} className="text-red-500 text-sm">
               Cancel
             </button>
           </div>
@@ -114,7 +142,12 @@ const Chatroom = () => {
             placeholder="Type your message..."
             className="flex-1 p-2 border border-gray-300 dark:border-gray-600 rounded mr-2 bg-white dark:bg-gray-800 text-black dark:text-white"
           />
-          <button type="submit" className="p-2 bg-blue-500 dark:bg-blue-700 text-white rounded">Send</button>
+          <button type="submit" className="p-2 bg-blue-500 dark:bg-blue-700 text-white rounded">
+            Send
+          </button>
+          <button type="button" onClick={handleSyncNow} className="ml-2 p-2 bg-gray-500 dark:bg-gray-600 text-white rounded">
+            Sync
+          </button>
         </div>
       </form>
     </div>
